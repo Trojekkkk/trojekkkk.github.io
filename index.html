@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trojekk</title>
+  <link rel="preload" href="assets/muzyka.mp3" as="audio"> 
+  <link rel="preload" href="assets/profilowe.png" as="image">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" defer>
+</head>
+<body>
+  <!-- Licznik odwiedzin -->
+  <div class="visit-counter">
+    <i class="fas fa-eye"></i> <span id="counter">0</span>
+  </div>
+
+  <!-- Baner w tle -->
+  <div class="background">
+    <img src="assets/banner.gif" alt="Baner" class="background-image" loading="lazy">
+  </div>
+
+  <!-- Półprzezroczysty profil -->
+  <div class="profile-card" id="profile-card">
+    <div class="profile-picture-wrapper">
+      <img src="assets/profilowe.png" alt="Profilowe" class="profile-picture" id="userAvatar" loading="lazy">
+    </div>
+    <h1>Trojekk</h1>
+    <p class="description">Sigma.</p>
+    
+    <!-- Lokalizacja – umieszczona nad social buttons -->
+    <div class="location">
+      <i class="fas fa-location-dot"></i> Warszawa
+    </div>
+    
+    <!-- Przycisk do profilu social media -->
+    <div class="social-buttons">
+      <a href="https://discord.com/users/702048768295698454" target="_blank" class="button social discord-button">
+        <i class="fab fa-discord"></i>
+      </a>
+      <a href="https://www.tiktok.com/@trojekkkk" target="_blank" class="button social tiktok">
+        <i class="fab fa-tiktok"></i>
+      </a>
+      <a href="https://www.youtube.com/@Trojekkkk" target="_blank" class="button social youtube">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Odtwarzacz muzyki -->
+  <div id="music-player" class="music-player">
+    <h4 id="track-title">PRO8L3M - VHS</h4>
+    <audio id="audio-player" preload="auto" style="display: none;">
+      <source src="assets/muzyka.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <div class="controls">
+      <button id="prev-track"><i class="fas fa-backward"></i></button>
+      <button id="pause-track"><i class="fas fa-pause"></i></button>
+      <button id="next-track"><i class="fas fa-forward"></i></button>
+      Głośność: 
+      <input type="range" id="volume-control" min="0" max="1" step="0.01" value="1">
+    </div>
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>
