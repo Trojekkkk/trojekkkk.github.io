@@ -1,72 +1,185 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const audioPlayer = document.getElementById('audio-player');
-    const trackTitle = document.getElementById('track-title');
-    const profileCard = document.querySelector(".profile-card");
+/* Globalne ustawienia */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
 
-    const tracks = [
-        { src: 'assets/muzyka.mp3', title: 'PRO8L3M - VHS' },
-        { src: 'assets/muzyka2.mp3', title: 'A$AP Rocky - I Smoked away my brain' }
-    ];
+/* Licznik odwiedzin */
+.visit-counter {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 18px;
+  color: #ffffff;
+}
 
-    let currentTrackIndex = 0;
+/* Baner w tle */
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
 
-    function changeTrack() {
-        audioPlayer.src = tracks[currentTrackIndex].src;
-        trackTitle.innerText = tracks[currentTrackIndex].title;
-        
-        // Spróbuj odtworzyć dźwięk
-        audioPlayer.play().catch(error => {
-            console.log("Autoplay zablokowane, wymagane kliknięcie użytkownika.");
-        });
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+}
 
-        audioPlayer.onended = function() {
-            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            changeTrack();
-        };
-    }
+/* Karta profilu */
+.profile-card {
+  background-color: rgba(20, 20, 20, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) perspective(1000px);
+  transition: transform 0.2s ease-out;
+}
 
-    // Odblokowanie autoplay po kliknięciu w stronę
-    function playAudio() {
-        changeTrack();
-        document.removeEventListener("click", playAudio);
-    }
+/* Obrazek profilowy */
+.profile-picture-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 15px #ffffff;
+  margin: 0 auto;
+}
 
-    document.addEventListener("click", playAudio);
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: grayscale(100%);
+}
 
-    // Obsługa przycisków
-    document.getElementById('next-track').addEventListener('click', function() {
-        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-        changeTrack();
-    });
+/* Animacja nagłówka */
+h1 {
+  font-size: 34px;
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff;
+  margin: 10px 0;
+  transition: 0.3s ease;
+}
 
-    document.getElementById('prev-track').addEventListener('click', function() {
-        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-        changeTrack();
-    });
+h1:hover {
+  text-shadow: 0 0 20px #ffffff;
+}
 
-    document.getElementById('volume-control').addEventListener('input', function() {
-        audioPlayer.volume = this.value;
-    });
+/* Opis */
+.description {
+  font-size: 18px;
+  color: #ffffff;
+  opacity: 0.8;
+}
 
-    document.getElementById('pause-track').addEventListener('click', function() {
-        if (audioPlayer.paused) {
-            audioPlayer.play();
-            this.innerHTML = '<i class="fas fa-pause"></i>';
-        } else {
-            audioPlayer.pause();
-            this.innerHTML = '<i class="fas fa-play"></i>';
-        }
-    });
+/* Lokalizacja */
+.location {
+  font-size: 20px;
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff;
+}
 
-    // 🔹 Efekt dynamicznego ruchu karty profilu z **lustrzanym odbiciem przechylenia** 🔹
-    document.addEventListener("mousemove", (event) => {
-        const x = (event.pageX - window.innerWidth / 2) / 30; // Odwrócone rotateY
-        const y = (event.pageY - window.innerHeight / 2) / 30; // Odwrócone rotateX
+.location .fa-location-dot {
+  font-size: 24px;
+  color: #ffffff;
+  margin-right: 8px;
+}
 
-        profileCard.style.transform = `translate(-50%, -50%) perspective(800px) rotateY(${x}deg) rotateX(${y}deg)`;
-    });
+/* Ikony Social */
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
 
-    document.addEventListener("mouseleave", () => {
-        profileCard.style.transform = "translate(-50%, -50%) perspective(800px) rotateY(0deg) rotateX(0deg)";
-    });
-});
+.social-buttons .button {
+  background-color: transparent;
+  border-radius: 50%;
+  padding: 10px;
+  display: inline-block;
+  border: 2px solid #ffffff;
+  transition: all 0.3s ease;
+}
+
+.social-buttons .button:hover {
+  background-color: #ffffff;
+}
+
+.social-buttons i {
+  color: #ffffff;
+  transition: color 0.3s;
+}
+
+.social-buttons .button:hover i {
+  color: #000000;
+}
+
+/* Odtwarzacz muzyki */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.music-player h4 {
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff;
+}
+
+/* Kontrolki odtwarzacza */
+.music-player .controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.music-player button {
+  padding: 10px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  box-shadow: 0 0 10px #ffffff;
+}
+
+.music-player button:hover {
+  background: #cccccc;
+  transform: scale(1.1);
+}
+
+.music-player input[type="range"] {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 5px;
+}
