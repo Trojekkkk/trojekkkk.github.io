@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const audioPlayer = document.getElementById('audio-player');
     const trackTitle = document.getElementById('track-title');
+    const profileCard = document.querySelector(".profile-card");
 
     const tracks = [
         { src: 'assets/muzyka.mp3', title: 'PRO8L3M - VHS' },
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Odblokowanie autoplay po kliknięciu w stronę
     function playAudio() {
-        changeTrack(); // Włącz muzykę po kliknięciu
+        changeTrack();
         document.removeEventListener("click", playAudio);
     }
 
@@ -55,5 +56,17 @@ document.addEventListener('DOMContentLoaded', function() {
             audioPlayer.pause();
             this.innerHTML = '<i class="fas fa-play"></i>';
         }
+    });
+
+    // 🔹 Efekt dynamicznego ruchu karty profilu z **lustrzanym odbiciem przechylenia** 🔹
+    document.addEventListener("mousemove", (event) => {
+        const x = (event.pageX - window.innerWidth / 2) / 30; // Odwrócone rotateY
+        const y = (event.pageY - window.innerHeight / 2) / 30; // Odwrócone rotateX
+
+        profileCard.style.transform = `translate(-50%, -50%) perspective(800px) rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+
+    document.addEventListener("mouseleave", () => {
+        profileCard.style.transform = "translate(-50%, -50%) perspective(800px) rotateY(0deg) rotateX(0deg)";
     });
 });
